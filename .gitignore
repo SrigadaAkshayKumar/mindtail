@@ -1,0 +1,25 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# media: large and/or licensed; kept locally, never committed
+library/*
+!library/README.md
+shorts/*/build/
+shorts/*/render/
+shorts/*/voice/
+*.part
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# os/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

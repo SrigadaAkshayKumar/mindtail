@@ -1,0 +1,83 @@
+# PIPELINE DEMO - not a real Short.
+# Uses synthetic sample media from `python -m mindtail samples`.
+# The text is test copy only; it states no facts.
+id: MT-0000
+title: "Pipeline demo: footage, Hindi text, music and sfx"
+status: SCRIPT_DRAFT
+
+audio:
+  bgm:
+    file: library/_samples/music/pulse-92bpm.wav
+    volume_db: -10
+    fade_in: 0.2
+    fade_out: 1.2
+  # voice: { file: shorts/MT-0000-pipeline-demo/voice.wav, duck_bgm: true }  # added later
+  target_lufs: -14
+
+scenes:
+  - duration: 2.6
+    footage: { file: library/_samples/footage/neural-landscape.mp4 }
+    motion: zoom_in
+    text:
+      - content: "ये सिर्फ एक TEST है"
+        style: hook
+        animation: punch
+        highlight: [TEST]
+        start: 0.05
+    sfx:
+      - { file: library/_samples/sfx/impact.wav, at: 0.0, volume_db: -3 }
+
+  - duration: 3.2
+    footage: { file: library/_samples/footage/cells-portrait.mp4, start: 1 }
+    transition: flash
+    text:
+      - content: "हर शब्द एक-एक करके\naata hai screen पर"
+        animation: words
+        highlight: [screen]
+        start: 0.1
+    sfx:
+      - { file: library/_samples/sfx/whoosh.wav, at: 0.0, volume_db: -6 }
+
+  - duration: 3.0
+    footage: { file: library/_samples/footage/grid-landscape.mp4 }
+    motion: zoom_out
+    text:
+      - content: "PART 2"
+        style: tag
+        animation: pop
+        position: upper
+        start: 0.1
+      - content: "नीचे से ऊपर slide"
+        animation: slide_up
+        highlight: [slide]
+        highlight_color: yellow
+        start: 0.3
+    sfx:
+      - { file: library/_samples/sfx/pop.wav, at: 0.1, volume_db: -8 }
+
+  - duration: 3.4
+    footage: { file: library/_samples/footage/waves-portrait.mp4 }
+    transition: fade
+    text:
+      - content: "Music + SFX mixing"
+        style: caption
+        animation: fade
+        position: lower
+        start: 0.2
+    sfx:
+      - { file: library/_samples/sfx/riser.wav, at: 1.4, volume_db: -8 }
+
+  - duration: 2.8
+    footage: { query: "city night neon", provider: pexels }
+    transition: flash
+    text:
+      - content: "अब असली footage की बारी"
+        style: hook
+        animation: pop
+        highlight: [footage]
+    sfx:
+      - { file: library/_samples/sfx/impact.wav, at: 0.0, volume_db: -4 }
+      - { file: library/_samples/sfx/whoosh.wav, at: 2.2, volume_db: -10 }
+
+credits:
+  - "Music and sound effects: synthesised sample files (pipeline test only)"

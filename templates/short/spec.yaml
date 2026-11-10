@@ -1,0 +1,49 @@
+# {{ID}}: edit plan. Format: docs/spec-reference.md
+id: {{ID}}
+title: "{{TITLE}}"
+status: SCRIPT_DRAFT
+
+audio:
+  bgm:
+    file: library/music/CHANGE-ME.mp3
+    volume_db: -10
+    fade_in: 0.3
+    fade_out: 1.5
+  # voice: { file: voice/vo.wav, duck_bgm: true }
+  target_lufs: -14
+
+scenes:
+  # HOOK (0-2 s): strongest line, strongest visual, impact sfx
+  - duration: 2.0
+    footage: { query: "CHANGE ME", provider: pexels }
+    motion: zoom_in
+    text:
+      - { content: "HOOK LINE", style: hook, animation: punch, highlight: [] }
+    sfx:
+      - { file: library/sfx/CHANGE-ME-impact.wav, at: 0.0, volume_db: -4 }
+
+  # SETUP
+  - duration: 3.0
+    footage: { query: "CHANGE ME", provider: pexels }
+    transition: flash
+    text:
+      - { content: "SETUP LINE", animation: words }
+    sfx:
+      - { file: library/sfx/CHANGE-ME-whoosh.wav, at: 0.0, volume_db: -8 }
+
+  # ESCALATION: add more scenes, a visual change every 1.5-3 s
+  - duration: 3.0
+    footage: { query: "CHANGE ME", provider: pexels }
+    text:
+      - { content: "ESCALATION LINE", animation: slide_up }
+
+  # PAYOFF
+  - duration: 3.5
+    footage: { query: "CHANGE ME", provider: pexels }
+    transition: fade
+    motion: zoom_out
+    text:
+      - { content: "PAYOFF LINE", style: hook, animation: pop }
+
+credits:
+  - "Music: <track> by <artist> (<source>, <licence>)"
