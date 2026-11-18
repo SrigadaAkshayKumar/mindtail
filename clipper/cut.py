@@ -12,7 +12,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from .common import die, out_fps, ffmpeg, fmt_ts, load_json, probe, project_dir, save_json, slugify
+from .common import W, H, die, out_fps, ffmpeg, fmt_ts, load_json, probe, project_dir, save_json, slugify
 from .reframe import analyse_range, plan_shots, shot_filter
 
 PAD_IN, PAD_OUT = 0.12, 0.30
@@ -68,7 +68,18 @@ def boundary_warnings(ranges, words):
     return warns
 
 
-def build_clip(video, info, clip, words, out_mp4, horizontal=False):
+def stack_filter(inp, cam, game_x0, label, fps, src_w, src_h):
+    """Streamer layout: the webcam box (cam = x,y,w,h in source pixels) scaled to the top half, the gameplay
+    (a 9:8 crop starting at game_x0) in the bottom half. 1080x1920, captions sit on the seam."""
+    x, y, w, h = cam
+    gw = min(src_w - game_x0, int(src_h * 9 / 8) // 2 * 2)
+    return (f'[{inp}]split[{label}c][{label}g];'
+            f'[{label}c]crop={w}:{h}:{x}:{y},scale={W}:{H // 2}:flags=lanczos[{label}ct];'
+            f'[{label}g]crop={gw}:{src_h}:{game_x0}:0,scale={W}:{H // 2}:flags=lanczos[{label}gt];'
+            f'[{label}ct][{label}gt]vstack,setsar=1,fps={fps},format=yuv420p[{label}]')
+
+
+def build_clip(video, info, clip, words, out_mp4, horizontal=False, stack=None):
     src_w, src_h = info['width'], info['height']
     fps = out_fps(info.get('fps', 30))
     parts, inputs, chains, labels = [], [], [], []
@@ -83,7 +94,10 @@ def build_clip(video, info, clip, words, out_mp4, horizontal=False):
         dur = end - start
         inputs += ['-ss', f'{start:.3f}', '-t', f'{dur:.3f}', '-i', str(video)]
         n = len(parts)
-        if horizontal:
+        if stack:
+            chains.append(stack_filter(f'{n}:v', stack['cam'], stack['game_x0'], f'v{n}', fps, src_w, src_h))
+            shots = [{'a': 0, 'b': dur, 'mode': 'stack', 'focus': [W / 2, H / 4]}]
+        elif horizontal:
             chains.append(f'[{n}:v]fps={fps},setsar=1,format=yuv420p[v{n}]')
             shots = [{'a': 0, 'b': dur, 'mode': 'horizontal', 'focus': [src_w / 2, src_h * 0.4]}]
         else:
@@ -129,6 +143,12 @@ def main():
     ap.add_argument('project')
     ap.add_argument('--clips', default=None, help='comma list of clip ids, e.g. 1,3')
     ap.add_argument('--horizontal', action='store_true', help='keep the original 16:9 framing')
+    ap.add_argument('--layout', choices=['face', 'stack'], default='face',
+                    help='face = reframe around the face (default); stack = webcam box on top, gameplay below '
+                         '(streams with a facecam overlay; needs --cam)')
+    ap.add_argument('--cam', default=None, help='stack: webcam box in source pixels "x,y,w,h" (inside its border)')
+    ap.add_argument('--game-x', type=int, default=None,
+                    help='stack: left edge of the gameplay crop in source pixels (default: centred)')
     ap.add_argument('--check', action='store_true', help='only check clip boundaries, cut nothing')
     a = ap.parse_args()
 
@@ -162,6 +182,15 @@ def main():
     video = ensure_video(pdir, project)
     info = probe(video)
     print(f'-> source: {info["width"]}x{info["height"]} {info["fps"]:.2f}fps, {fmt_ts(info["duration"])}')
+    stack = None
+    if a.layout == 'stack':
+        if not a.cam:
+            die('--layout stack needs --cam "x,y,w,h": the webcam box in source pixels')
+        cam = [int(v) for v in a.cam.split(',')]
+        gw = min(info['width'], int(info['height'] * 9 / 8) // 2 * 2)
+        gx = a.game_x if a.game_x is not None else (info['width'] - gw) // 2
+        stack = {'cam': cam, 'game_x0': max(0, min(gx, info['width'] - gw)) // 2 * 2}
+        print(f'-> layout: stack, webcam {cam}, gameplay from x={stack["game_x0"]}')
     out_dir = pdir / 'clips'
     out_dir.mkdir(exist_ok=True)
 
@@ -173,7 +202,7 @@ def main():
         name = f'{cid:02d}-{slugify(clip.get("title", "clip"), 40)}'
         out = out_dir / f'{name}.mp4'
         print(f'-> clip {cid}: "{clip.get("title")}"  ranges={clip["ranges"]}')
-        meta = build_clip(video, info, clip, words, out, a.horizontal)
+        meta = build_clip(video, info, clip, words, out, a.horizontal, stack)
         if not meta:
             print('   ! skipped (no words in its ranges)')
             continue

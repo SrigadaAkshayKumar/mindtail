@@ -63,6 +63,15 @@ each camera shot around the speaker's face (9:16, 1080x1920), and writes `clips/
 Shots with no detectable face (slides, b-roll) get a blurred-background "fit" layout.
 Use `--horizontal` to keep 16:9, and `--clips 2,4` to redo only some.
 
+**Streams with a facecam box over gameplay** (Twitch/YouTube gaming streams): the face reframe
+centres on the small webcam box and drags chat and the minimap into frame. Use the stacked layout
+instead: webcam on top, gameplay below.
+1. Grab a frame (`ffmpeg -ss 600 -i <video> -frames:v 1 frame.png`), Read it, and measure the
+   webcam box in source pixels, inside its border (crop a corner to check the edges).
+2. `python run.py cut <project> --layout stack --cam "x,y,w,h" --game-x <left edge of the
+   gameplay crop, clear of the overlay>`. Read a frame of one cut before cutting them all.
+3. Edit with `--no-zoom --caption-y 960` (captions on the seam; zooms would crop the gameplay).
+
 **These raw cuts are already postable.** If the user only wanted clips, stop here and report.
 
 ## 4. Brand colours for captions (quick, don't overthink)
