@@ -33,3 +33,6 @@ remotion/out/
 .cache/
 *.cookies
 cookies*.txt
+
+# source videos to clip
+input/
