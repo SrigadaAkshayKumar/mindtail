@@ -1,0 +1,108 @@
+{
+  "sig": [
+    [
+      "click.wav",
+      56526
+    ],
+    [
+      "whoosh-cinematic.mp3",
+      67709
+    ],
+    [
+      "whoosh-heavy.mp3",
+      704816
+    ]
+  ],
+  "items": [
+    {
+      "file": "click.wav",
+      "role": "click",
+      "variant": 0,
+      "start": 0.04,
+      "length": 0.21,
+      "peak": 0.02,
+      "norm_db": 3.03
+    },
+    {
+      "file": "whoosh-cinematic.mp3",
+      "role": "whoosh",
+      "variant": 0,
+      "start": 0.15,
+      "length": 1.54,
+      "peak": 0.74,
+      "norm_db": -0.03
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 0,
+      "start": 1.16,
+      "length": 2.11,
+      "peak": 0.85,
+      "norm_db": 3.88
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 1,
+      "start": 4.68,
+      "length": 2.04,
+      "peak": 1.05,
+      "norm_db": 2.08
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 2,
+      "start": 8.07,
+      "length": 1.86,
+      "peak": 0.97,
+      "norm_db": 2.94
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 3,
+      "start": 10.76,
+      "length": 1.95,
+      "peak": 1.02,
+      "norm_db": 2.73
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 4,
+      "start": 13.58,
+      "length": 1.8,
+      "peak": 0.92,
+      "norm_db": 3.88
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 5,
+      "start": 16.23,
+      "length": 1.75,
+      "peak": 0.83,
+      "norm_db": -1.22
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 6,
+      "start": 18.85,
+      "length": 1.9,
+      "peak": 1.06,
+      "norm_db": 2.44
+    },
+    {
+      "file": "whoosh-heavy.mp3",
+      "role": "whoosh",
+      "variant": 7,
+      "start": 21.71,
+      "length": 1.95,
+      "peak": 0.92,
+      "norm_db": 3.41
+    }
+  ]
+}

@@ -23,3 +23,13 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+
+# clip-video skill: videos and results never get committed
+output/*
+!output/.gitkeep
+remotion/node_modules/
+remotion/public/clip*.mp4
+remotion/out/
+.cache/
+*.cookies
+cookies*.txt

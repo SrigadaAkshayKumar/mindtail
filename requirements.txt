@@ -1,3 +1,10 @@
 PyYAML>=6.0
 requests>=2.31
 pytest>=8.0
+
+# clip-video skill (from Plextrang/Claude-Video-Clipper, MIT)
+yt-dlp[default]>=2025.10.0
+faster-whisper>=1.1.0
+soundfile>=0.12
+numpy>=1.26
+opencv-python>=4.10

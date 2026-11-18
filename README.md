@@ -88,3 +88,11 @@ tests/               pytest suite (python -m pytest)
   page, author and licence name are recorded automatically. Music and sound
   effects must come from sources whose licence allows YouTube use; record them
   under `credits:` in the spec.
+
+## Clipping long videos into Shorts (`clip-video` skill)
+
+Open this repo in Claude Code and say **"clip this video: <link or file>"**. Claude transcribes it, picks the
+best self-contained moments (hook → story → payoff), cuts them to 9:16 around the speaker's face and adds
+zooms, word-by-word captions and light whooshes. Setup once: `python install.py`. Results: `output/<project>/`.
+Clip only videos MINDTAIL owns or has permission to use. Toolkit from
+[Plextrang/Claude-Video-Clipper](https://github.com/Plextrang/Claude-Video-Clipper) (MIT).
