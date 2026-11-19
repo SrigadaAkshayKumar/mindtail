@@ -28,6 +28,10 @@ def esc(text):
 def shot_chain(i, shot, crop_h, src_w, fps):
     start, dur = shot[0], shot[1]
     xc = shot[2] if len(shot) > 2 else 0.5
+    if xc == 'fit':   # wide title cards: the whole 16:9 frame, letterboxed on black
+        return (f'[{i}:v]scale={W}:-2:flags=lanczos,pad={W}:{H}:0:(oh-ih)/2:black,setsar=1,fps={fps},'
+                f'eq=contrast=1.08:saturation=0.92,noise=alls=4:allf=t,format=yuv420p[v{i}];'
+                f'[{i}:a]aresample=48000,asetpts=PTS-STARTPTS[a{i}]')
     cw = int(crop_h * 9 / 16) // 2 * 2
     x0 = int(min(max(xc * src_w - cw / 2, 0), src_w - cw)) // 2 * 2
     zoom = 0.06
