@@ -4,6 +4,7 @@
     python run.py cut <project>                          cut the picked clips to 9:16
     python run.py edit <project> [--engine python|remotion] [--clips 1,3]
     python run.py find <project> "exact phrase"          word-accurate time of a phrase
+    python run.py mood <spec.json> [--preview song.mp3]  cinematic montage edits for a song added on the platform
 
 Run `python run.py <command> -h` for the options of each step.
 """
@@ -21,6 +22,7 @@ COMMANDS = {
     'brand': 'clipper.brand',
     'edit': 'clipper.edit',
     'find': 'clipper.find',
+    'mood': 'clipper.mood',
 }
 
 
